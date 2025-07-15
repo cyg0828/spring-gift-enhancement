@@ -32,7 +32,7 @@ public class ProductService {
     }
 
     public ProductResponse save(ProductRequest request) {
-        Product saved = productRepository.save(new Product(null, request.getName(), request.getPrice(), request.getImageUrl()));
+        Product saved = productRepository.save(new Product(request.getName(), request.getPrice(), request.getImageUrl()));
         return toResponse(saved);
     }
 
@@ -40,7 +40,6 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("상품이 존재하지 않습니다."));
         product.update(request.getName(), request.getPrice(), request.getImageUrl());
-        productRepository.update(product);
         return toResponse(product);
     }
 

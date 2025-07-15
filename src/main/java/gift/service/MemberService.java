@@ -35,7 +35,7 @@ public class MemberService {
         if (memberRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("이미 가입된 이메일입니다.");
         }
-        Member member = new Member(null, email, password);
+        Member member = new Member(email, password);
         return memberRepository.save(member);
     }
 
