@@ -1,13 +1,30 @@
 package gift.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Entity
 public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 15)
     private String name;
+
+    @Column(nullable = false)
     private int price;
+
+    @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    public Product(Long id, String name, int price, String imageUrl) {
-        this.id = id;
+    protected Product() {
+    }
+
+    public Product(String name, int price, String imageUrl) {
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
