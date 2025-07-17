@@ -1,4 +1,4 @@
-# spring-gift-wishlist
+# spring-gift-enhancement
 step0
 - wishlist 코드 옮기기
 
