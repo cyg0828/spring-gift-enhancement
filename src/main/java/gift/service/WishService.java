@@ -6,12 +6,11 @@ import gift.domain.Wish;
 import gift.repository.MemberRepository;
 import gift.repository.ProductRepository;
 import gift.repository.WishRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class WishService {
@@ -49,11 +48,11 @@ public class WishService {
                 .ifPresent(wishRepository::delete);
     }
 
-    public List<Product> getWishProducts(Long memberId) {
+    public Page<Product> getWishProducts(Long memberId, Pageable pageable) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("회원이 존재하지 않습니다."));
-        return wishRepository.findByMember(member).stream()
-                .map(Wish::getProduct)
-                .collect(Collectors.toList());
+
+        return wishRepository.findByMember(member, pageable)
+                .map(Wish::getProduct);
     }
 }

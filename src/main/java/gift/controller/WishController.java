@@ -5,9 +5,9 @@ import gift.domain.Member;
 import gift.domain.Product;
 import gift.dto.WishRequest;
 import gift.service.WishService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/wishes")
@@ -20,10 +20,9 @@ public class WishController {
     }
 
     @GetMapping
-    public List<Product> getWishes(@LoginMember Member member) {
-        return wishService.getWishProducts(member.getId());
+    public Page<Product> getWishes(@LoginMember Member member, Pageable pageable) {
+        return wishService.getWishProducts(member.getId(), pageable);
     }
-
     @PostMapping
     public void addWish(@RequestBody WishRequest request, @LoginMember Member member) {
         wishService.addWish(member.getId(), request.getProductId());

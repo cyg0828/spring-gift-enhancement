@@ -15,4 +15,5 @@ public class PageController {
     public String wishlistPage() {
         return "wishlist";
     }
+
 }
