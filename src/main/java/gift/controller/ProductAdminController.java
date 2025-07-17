@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,7 @@ public class ProductAdminController {
     }
 
     @GetMapping
+
     public String list(Model model, @PageableDefault(size = 10) Pageable pageable) {
         Page<ProductResponse> products = productService.findAll(pageable);
         model.addAttribute("products", products);

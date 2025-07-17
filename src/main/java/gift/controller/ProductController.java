@@ -23,6 +23,7 @@ public class ProductController {
     public Page<ProductResponse> getAll(Pageable pageable) {
         return productService.findAll(pageable);
     }
+  
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponse addProduct(@Valid @RequestBody ProductRequest request) {
