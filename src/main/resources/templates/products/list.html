@@ -6,30 +6,50 @@
 </head>
 <body>
 <h1>상품 목록</h1>
-<a href="/admin/products/new">상품 등록</a>
+
 <table border="1">
     <thead>
     <tr>
-        <th>상품명</th>
+        <th>ID</th>
+        <th>이름</th>
         <th>가격</th>
-        <th>이미지</th>
-        <th>관리</th>
+        <th>이미지 URL</th>
+        <th>수정</th>
+        <th>삭제</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="product : ${products}">
-        <td th:text="${product.name}"></td>
-        <td th:text="${product.price}"></td>
-        <td><img th:src="${product.imageUrl}" alt="상품 이미지" width="100"></td>
+    <tr th:each="product : ${products.content}">
+        <td th:text="${product.id}">1</td>
+        <td th:text="${product.name}">상품명</td>
+        <td th:text="${product.price}">1000</td>
+        <td th:text="${product.imageUrl}">http://example.com</td>
+        <td><a th:href="@{/admin/products/{id}/edit(id=${product.id})}">수정</a></td>
         <td>
-            <a th:href="@{|/admin/products/${product.id}/edit|}">수정</a>
-            <form th:action="@{|/admin/products/${product.id}/delete|}" method="post" style="display:inline">
+            <form th:action="@{/admin/products/{id}/delete(id=${product.id})}" method="post">
                 <button type="submit">삭제</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
+
+<!-- 페이지네이션 -->
+<div>
+    <span th:if="${products.hasPrevious()}">
+        <a th:href="@{/admin/products(page=${products.number - 1})}">이전</a>
+    </span>
+
+    <span th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}">
+        <a th:href="@{/admin/products(page=${i})}"
+           th:text="${i + 1}"
+           th:classappend="${i} == ${products.number} ? 'current-page' : ''">1</a>
+    </span>
+
+    <span th:if="${products.hasNext()}">
+        <a th:href="@{/admin/products(page=${products.number + 1})}">다음</a>
+    </span>
+</div>
+
 </body>
 </html>
-

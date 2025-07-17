@@ -2,6 +2,8 @@ package gift.service;
 
 import gift.auth.JwtProvider;
 import gift.domain.Member;
+import gift.dto.LoginRequest;
+import gift.dto.LoginResponse;
 import gift.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 

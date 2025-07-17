@@ -16,8 +16,8 @@
 <pre id="wishlist"></pre>
 
 <h2>전체 상품 목록</h2>
-<button onclick="getAllProducts()">상품 불러오기</button>
 <ul id="productList"></ul>
+<div id="pagination"></div>
 
 <h2>상품 삭제</h2>
 <label>상품 ID:
@@ -34,7 +34,13 @@
     const productUrl = baseUrl + "/api/products";
 
     window.onload = () => {
-        document.getElementById("token").value = localStorage.getItem("token") || "";
+        const token = localStorage.getItem("token");
+        document.getElementById("token").value = token || "";
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            window.location.href = "/auth";
+        }
+        getAllProducts(0);
     };
 
     function getToken() {
@@ -49,7 +55,7 @@
         })
             .then(res => res.json())
             .then(data => {
-                document.getElementById("wishlist").textContent = JSON.stringify(data, null, 2);
+                document.getElementById("wishlist").textContent = JSON.stringify(data.content || [], null, 2);
             })
             .catch(err => alert("조회 실패: " + err));
     }
@@ -81,23 +87,44 @@
             .catch(err => alert("삭제 실패: " + err));
     }
 
-    function getAllProducts() {
-        fetch(productUrl)
+    function getAllProducts(page) {
+        fetch(`${productUrl}?page=${page}&size=5`)
             .then(res => res.json())
             .then(data => {
-                const list = document.getElementById("productList");
-                list.innerHTML = "";
-                data.forEach(product => {
-                    const li = document.createElement("li");
-                    li.textContent = `${product.id}. ${product.name} (${product.price}원) `;
-                    const btn = document.createElement("button");
-                    btn.textContent = "➕ 추가";
-                    btn.onclick = () => addWish(product.id);
-                    li.appendChild(btn);
-                    list.appendChild(li);
-                });
+                renderProducts(data.content || []);
+                renderPagination(data.totalPages, data.number);
             })
             .catch(err => alert("상품 목록 불러오기 실패: " + err));
+    }
+
+    function renderProducts(products) {
+        const list = document.getElementById("productList");
+        list.innerHTML = "";
+        products.forEach(product => {
+            const li = document.createElement("li");
+            li.textContent = `${product.id}. ${product.name} (${product.price}원) `;
+            const btn = document.createElement("button");
+            btn.textContent = "➕ 추가";
+            btn.onclick = () => addWish(product.id);
+            li.appendChild(btn);
+            list.appendChild(li);
+        });
+    }
+
+    function renderPagination(totalPages, currentPage) {
+        const pagination = document.getElementById("pagination");
+        pagination.innerHTML = "";
+
+        for (let i = 0; i < totalPages; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i + 1;
+            if (i === currentPage) {
+                btn.disabled = true;
+                btn.style.fontWeight = "bold";
+            }
+            btn.onclick = () => getAllProducts(i);
+            pagination.appendChild(btn);
+        }
     }
 
     function logout() {
