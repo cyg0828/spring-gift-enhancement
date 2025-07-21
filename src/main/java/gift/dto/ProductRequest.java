@@ -3,9 +3,7 @@ package gift.dto;
 import gift.domain.ProductOption;
 import gift.validation.NoKakao;
 import jakarta.validation.constraints.*;
-
 import java.util.List;
-
 public class ProductRequest {
     private Long id;
 
