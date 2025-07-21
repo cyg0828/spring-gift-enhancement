@@ -24,7 +24,7 @@ import java.util.List;
 public class ProductAdminController {
 
     private final ProductService productService;
-    private final ProductRepository productRepository; // 추가
+    private final ProductRepository productRepository;
     private final ProductOptionRepository productOptionRepository;
     private final ProductOptionService productOptionService;
 

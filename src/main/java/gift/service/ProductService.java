@@ -33,7 +33,7 @@ public class ProductService {
                             product.getPrice(),
                             product.getImageUrl()
                     );
-                    response.setOptions(product.getOptions()); // 옵션 포함시키기
+                    response.setOptions(product.getOptions());
                     return response;
                 });
     }

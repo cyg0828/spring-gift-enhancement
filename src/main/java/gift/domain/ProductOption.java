@@ -29,7 +29,7 @@ public class ProductOption {
 
     public void subtract(int amount) {
         if (amount < 1 || amount > this.quantity) {
-            throw new IllegalArgumentException("감소할 수량이 잘못되었습니다.");
+            throw new IllegalArgumentException("삭제할 수량이 잘못되었습니다.");
         }
         this.quantity -= amount;
     }
