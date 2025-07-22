@@ -66,17 +66,20 @@ public class ProductService {
         List<ProductOption> options = product.getOptions();
 
         if (optionNames != null && optionQuantities != null) {
+            if (optionNames.size() != optionQuantities.size() || optionNames.size() != options.size()) {
+                throw new IllegalArgumentException("옵션 이름, 수량, 기존 옵션 수의 개수가 일치하지 않습니다.");
+            }
+
             Set<String> nameSet = new HashSet<>();
-            for (String name : optionNames) {
+            for (int i = 0; i < options.size(); i++) {
+                String name = optionNames.get(i);
+                int quantity = optionQuantities.get(i);
+
                 if (!nameSet.add(name)) {
                     throw new IllegalArgumentException("옵션 이름이 중복됩니다: " + name);
                 }
-            }
 
-            for (int i = 0; i < options.size(); i++) {
-                if (i < optionNames.size()) {
-                    options.get(i).update(optionNames.get(i), optionQuantities.get(i));
-                }
+                options.get(i).update(name, quantity);
             }
         }
 

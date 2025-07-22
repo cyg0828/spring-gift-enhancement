@@ -22,6 +22,9 @@ public class Product {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductOption> options = new ArrayList<>();
+
     protected Product() {
     }
 
@@ -52,9 +55,6 @@ public class Product {
         this.price = price;
         this.imageUrl = imageUrl;
     }
-  
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductOption> options = new ArrayList<>();
 
     public void addOption(ProductOption option) {
         options.add(option);
